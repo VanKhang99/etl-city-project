@@ -10,6 +10,7 @@ SELECT
     pressure,
     humidity,
     wind_speed,
+    time_of_record,
     sunrise_time,
     sunset_time
 FROM cities c

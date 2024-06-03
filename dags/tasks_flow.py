@@ -20,7 +20,8 @@ import pandas as pd
 def to_csv(df_data, name_file):
   time_now = datetime.now() + timedelta(hours=7)
   
-  file_name = f'{name_file}_data_{time_now.strftime('%d-%m-%Y')}'
+  sub_name = time_now.strftime('%d-%m-%Y-%H-%M-%S')
+  file_name = f'{name_file}_data_{sub_name}'
   df_data.to_csv(f'/opt/airflow/data-transformed/{file_name}.csv', index=False)
 
   return f'{file_name}.csv'
@@ -60,6 +61,7 @@ def save_data_joined_to_csv(**kwargs):
     'pressure',
     'humidity',
     'wind_speed',
+    'time_of_record',
     'sunrise_time',
     'sunset_time'
   ])
@@ -121,19 +123,6 @@ def transform_data_city_api(**kwargs):
     'latitude': latitude,
     'longitude': longitude
   }
-
-def check_data_city_is_exist(**kwargs):
-  ti = kwargs['ti']
-  wiki_id = ti.xcom_pull(task_ids=f'transform_data_city_api')['wiki_id']
-
-  query = f"SELECT COUNT(*) FROM cities WHERE wiki_id = '{wiki_id}';"
-  hook = PostgresHook(postgres_conn_id='postgres_connection_id')
-  records = hook.get_records(query)
-  
-  if records[0][0] >= 1:
-    return f'end_tasks_flow'
-  else:
-    return f'group_tasks.load_csv_city_to_postgres'
 
 ###############################################################################
 ################################### WEATHER ###################################
@@ -214,7 +203,7 @@ with DAG (
   is_city_api_ready = HttpSensor(
     task_id = 'is_api_city_ready',
     http_conn_id = 'city_map_api_connection',
-    endpoint = '/v1/geo/cities/Q25282',
+    endpoint = '/v1/geo/cities/Q1854',
     headers = {
         "X-RapidAPI-Key": "94e1cf3537mshb395c2b8765d914p1dff7fjsnba7ed4fb8d55"
     }
@@ -223,7 +212,7 @@ with DAG (
   extract_city_data_from_api = SimpleHttpOperator(
     task_id = 'extract_city_data_from_api',
     http_conn_id = 'city_map_api_connection',
-    endpoint ='/v1/geo/cities/Q25282',
+    endpoint ='/v1/geo/cities/Q1854',
     headers = {
         "X-RapidAPI-Key": "94e1cf3537mshb395c2b8765d914p1dff7fjsnba7ed4fb8d55"
     },
@@ -258,6 +247,12 @@ with DAG (
     python_callable = delete_files_csv
   )
 
+  delete_data_in_postgres = PostgresOperator(
+    task_id = 'delete_data_in_postgres',
+    postgres_conn_id  = 'postgres_connection_id',
+    sql = 'sql/queries/delele_data.sql'
+  )
+
   end_tasks_flow = DummyOperator(
     task_id ='end_tasks_flow'
   )
@@ -268,11 +263,6 @@ with DAG (
       task_id = 'create_table_city_postgresql',
       postgres_conn_id  = 'postgres_connection_id',
       sql = 'sql/create/create_table_cities.sql'
-    )
-
-    check_data_city_is_exist = BranchPythonOperator(
-      task_id = 'check_data_city_is_exist',
-      python_callable = check_data_city_is_exist
     )
 
     load_csv_city_to_postgres = PythonOperator(
@@ -332,15 +322,11 @@ with DAG (
     )
 
     ################################### TASKS FLOW ###################################
-    create_table_city_postgresql >> check_data_city_is_exist >> [load_csv_city_to_postgres, end_tasks_flow]
-    
-    load_csv_city_to_postgres >> create_table_weather_postgresql
+    create_table_city_postgresql >> load_csv_city_to_postgres >> create_table_weather_postgresql
    
     is_weather_api_ready >> extract_weather_data_from_api >> transform_data_weather_api >> create_table_weather_postgresql >> load_csv_weather_to_postgres
 
-   
-
-  is_city_api_ready >> extract_city_data_from_api >> transform_data_city_api >> group_tasks >> join_city_weather >> save_data_joined_to_csv >> up_load_data_joined_to_s3 >> delete_files_csv
+  is_city_api_ready >> extract_city_data_from_api >> transform_data_city_api >> group_tasks >> join_city_weather >> save_data_joined_to_csv >> up_load_data_joined_to_s3 >> delete_files_csv >> delete_data_in_postgres >> end_tasks_flow
   
   
 
