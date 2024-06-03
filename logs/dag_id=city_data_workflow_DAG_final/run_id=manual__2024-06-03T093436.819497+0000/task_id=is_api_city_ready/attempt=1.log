@@ -1,0 +1,68 @@
+[2024-06-03T09:34:38.319+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-06-03T09:34:38.345+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: city_data_workflow_DAG_final.is_api_city_ready manual__2024-06-03T09:34:36.819497+00:00 [queued]>
+[2024-06-03T09:34:38.355+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: city_data_workflow_DAG_final.is_api_city_ready manual__2024-06-03T09:34:36.819497+00:00 [queued]>
+[2024-06-03T09:34:38.356+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 6
+[2024-06-03T09:34:38.372+0000] {taskinstance.py:2330} INFO - Executing <Task(HttpSensor): is_api_city_ready> on 2024-06-03 09:34:36.819497+00:00
+[2024-06-03T09:34:38.382+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'city_data_workflow_DAG_final', 'is_api_city_ready', 'manual__2024-06-03T09:34:36.819497+00:00', '--job-id', '963', '--raw', '--subdir', 'DAGS_FOLDER/tasks_flow.py', '--cfg-path', '/tmp/tmp_tni0rw3']
+[2024-06-03T09:34:38.386+0000] {standard_task_runner.py:91} INFO - Job 963: Subtask is_api_city_ready
+[2024-06-03T09:34:38.392+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=1960) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-06-03T09:34:38.394+0000] {standard_task_runner.py:63} INFO - Started process 1965 to run task
+[2024-06-03T09:34:38.455+0000] {task_command.py:426} INFO - Running <TaskInstance: city_data_workflow_DAG_final.is_api_city_ready manual__2024-06-03T09:34:36.819497+00:00 [running]> on host cd9caf1c47f0
+[2024-06-03T09:34:38.565+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Khang' AIRFLOW_CTX_DAG_ID='city_data_workflow_DAG_final' AIRFLOW_CTX_TASK_ID='is_api_city_ready' AIRFLOW_CTX_EXECUTION_DATE='2024-06-03T09:34:36.819497+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-06-03T09:34:36.819497+00:00'
+[2024-06-03T09:34:38.566+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-06-03T09:34:38.582+0000] {baseoperator.py:399} WARNING - HttpSensor.execute cannot be called outside TaskInstance!
+[2024-06-03T09:34:38.583+0000] {http.py:137} INFO - Poking: /v1/geo/cities/Q1854
+[2024-06-03T09:34:38.598+0000] {base.py:84} INFO - Using connection ID 'city_map_api_connection' for task execution.
+[2024-06-03T09:34:38.907+0000] {http.py:199} ERROR - HTTP error: Too Many Requests
+[2024-06-03T09:34:38.909+0000] {http.py:200} ERROR - {"message":"You have exceeded the rate limit per second for your plan, BASIC, by the API provider"}
+[2024-06-03T09:34:38.911+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-06-03T09:34:38.951+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/http/hooks/http.py", line 197, in check_response
+    response.raise_for_status()
+  File "/home/airflow/.local/lib/python3.12/site-packages/requests/models.py", line 1021, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://wft-geo-db.p.rapidapi.com/v1/geo/cities/Q1854
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/http/sensors/http.py", line 164, in execute
+    super().execute(context=context)
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/sensors/base.py", line 264, in execute
+    raise e
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/sensors/base.py", line 246, in execute
+    poke_return = self.poke(context)
+                  ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/http/sensors/http.py", line 158, in poke
+    raise exc
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/http/sensors/http.py", line 139, in poke
+    response = hook.run(
+               ^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/http/hooks/http.py", line 187, in run
+    return self.run_and_check(session, prepped_request, extra_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/http/hooks/http.py", line 238, in run_and_check
+    self.check_response(response)
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/http/hooks/http.py", line 201, in check_response
+    raise AirflowException(str(response.status_code) + ":" + response.reason)
+airflow.exceptions.AirflowException: 429:Too Many Requests
+[2024-06-03T09:34:38.963+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=city_data_workflow_DAG_final, task_id=is_api_city_ready, run_id=manual__2024-06-03T09:34:36.819497+00:00, execution_date=20240603T093436, start_date=20240603T093438, end_date=20240603T093438
+[2024-06-03T09:34:38.976+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 963 for task is_api_city_ready (429:Too Many Requests; 1965)
+[2024-06-03T09:34:39.010+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 1
+[2024-06-03T09:34:39.026+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/models/baseoperator.py:1296 AirflowProviderDeprecationWarning: Call to deprecated class SimpleHttpOperator. (Class `SimpleHttpOperator` is deprecated and will be removed in a future release. Please use `HttpOperator` instead.)
+[2024-06-03T09:34:39.029+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/models/baseoperator.py:1296 AirflowProviderDeprecationWarning: Call to deprecated class PostgresOperator. (Please use `***.providers.common.sql.operators.sql.SQLExecuteQueryOperator`.Also, you can provide `hook_params={'schema': <database>}`.)
+[2024-06-03T09:34:39.059+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-06-03T09:34:39.062+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

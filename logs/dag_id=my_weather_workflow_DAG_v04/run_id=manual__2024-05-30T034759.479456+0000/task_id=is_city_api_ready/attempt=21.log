@@ -1,0 +1,66 @@
+[2024-05-30T11:22:54.535+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-05-30T11:22:54.557+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: my_weather_workflow_DAG_v04.is_city_api_ready manual__2024-05-30T03:47:59.479456+00:00 [queued]>
+[2024-05-30T11:22:54.566+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: my_weather_workflow_DAG_v04.is_city_api_ready manual__2024-05-30T03:47:59.479456+00:00 [queued]>
+[2024-05-30T11:22:54.567+0000] {taskinstance.py:2306} INFO - Starting attempt 21 of 26
+[2024-05-30T11:22:54.580+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): is_city_api_ready> on 2024-05-30 03:47:59.479456+00:00
+[2024-05-30T11:22:54.588+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'my_weather_workflow_DAG_v04', 'is_city_api_ready', 'manual__2024-05-30T03:47:59.479456+00:00', '--job-id', '157', '--raw', '--subdir', 'DAGS_FOLDER/weather_dag.py', '--cfg-path', '/tmp/tmpfql1ja5c']
+[2024-05-30T11:22:54.591+0000] {standard_task_runner.py:91} INFO - Job 157: Subtask is_city_api_ready
+[2024-05-30T11:22:54.592+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=2290) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-05-30T11:22:54.592+0000] {standard_task_runner.py:63} INFO - Started process 2292 to run task
+[2024-05-30T11:22:54.683+0000] {task_command.py:426} INFO - Running <TaskInstance: my_weather_workflow_DAG_v04.is_city_api_ready manual__2024-05-30T03:47:59.479456+00:00 [running]> on host cd9caf1c47f0
+[2024-05-30T11:22:54.839+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Khang' AIRFLOW_CTX_DAG_ID='my_weather_workflow_DAG_v04' AIRFLOW_CTX_TASK_ID='is_city_api_ready' AIRFLOW_CTX_EXECUTION_DATE='2024-05-30T03:47:59.479456+00:00' AIRFLOW_CTX_TRY_NUMBER='21' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-05-30T03:47:59.479456+00:00'
+[2024-05-30T11:22:54.840+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-05-30T11:22:54.856+0000] {python.py:237} INFO - Done. Returned value was: <Task(HttpSensor): is_city_api_ready>
+[2024-05-30T11:22:54.857+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-05-30T11:22:54.871+0000] {xcom.py:675} ERROR - Object of type HttpSensor is not JSON serializable. If you are using pickle instead of JSON for XCom, then you need to enable pickle support for XCom in your *** config or make sure to decorate your object with attr.
+[2024-05-30T11:22:54.874+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/json.py", line 91, in default
+    return serialize(o)
+           ^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/serialization/serde.py", line 189, in serialize
+    raise TypeError(f"cannot serialize object of type {cls}")
+TypeError: cannot serialize object of type <class '***.providers.http.sensors.http.HttpSensor'>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 486, in _execute_task
+    task_instance.xcom_push(key=XCOM_RETURN_KEY, value=xcom_value, session=session)
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 76, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3197, in xcom_push
+    XCom.set(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 76, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/xcom.py", line 246, in set
+    value = cls.serialize_value(
+            ^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/xcom.py", line 673, in serialize_value
+    return json.dumps(value, cls=XComEncoder).encode("UTF-8")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/json.py", line 104, in encode
+    return super().encode(o)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/json.py", line 93, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type HttpSensor is not JSON serializable
+[2024-05-30T11:22:54.892+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=my_weather_workflow_DAG_v04, task_id=is_city_api_ready, run_id=manual__2024-05-30T03:47:59.479456+00:00, execution_date=20240530T034759, start_date=20240530T112254, end_date=20240530T112254
+[2024-05-30T11:22:54.908+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 157 for task is_city_api_ready (Object of type HttpSensor is not JSON serializable; 2292)
+[2024-05-30T11:22:54.928+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 1
+[2024-05-30T11:22:54.951+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-05-30T11:22:54.954+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

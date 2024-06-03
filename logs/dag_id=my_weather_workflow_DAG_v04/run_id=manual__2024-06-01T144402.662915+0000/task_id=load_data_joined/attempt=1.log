@@ -1,0 +1,18 @@
+[2024-06-01T15:52:16.504+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-06-01T15:52:16.526+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: my_weather_workflow_DAG_v04.load_data_joined manual__2024-06-01T14:44:02.662915+00:00 [queued]>
+[2024-06-01T15:52:16.535+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: my_weather_workflow_DAG_v04.load_data_joined manual__2024-06-01T14:44:02.662915+00:00 [queued]>
+[2024-06-01T15:52:16.537+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 6
+[2024-06-01T15:52:16.550+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): load_data_joined> on 2024-06-01 14:44:02.662915+00:00
+[2024-06-01T15:52:16.557+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=2461) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-06-01T15:52:16.558+0000] {standard_task_runner.py:63} INFO - Started process 2463 to run task
+[2024-06-01T15:52:16.557+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'my_weather_workflow_DAG_v04', 'load_data_joined', 'manual__2024-06-01T14:44:02.662915+00:00', '--job-id', '830', '--raw', '--subdir', 'DAGS_FOLDER/tasks_flow.py', '--cfg-path', '/tmp/tmpbp3lxwos']
+[2024-06-01T15:52:16.560+0000] {standard_task_runner.py:91} INFO - Job 830: Subtask load_data_joined
+[2024-06-01T15:52:16.625+0000] {task_command.py:426} INFO - Running <TaskInstance: my_weather_workflow_DAG_v04.load_data_joined manual__2024-06-01T14:44:02.662915+00:00 [running]> on host cd9caf1c47f0
+[2024-06-01T15:52:16.741+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Khang' AIRFLOW_CTX_DAG_ID='my_weather_workflow_DAG_v04' AIRFLOW_CTX_TASK_ID='load_data_joined' AIRFLOW_CTX_EXECUTION_DATE='2024-06-01T14:44:02.662915+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-06-01T14:44:02.662915+00:00'
+[2024-06-01T15:52:16.744+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-06-01T15:52:16.774+0000] {python.py:237} INFO - Done. Returned value was: [['Q1854', 'Ho Chi Minh City', 'Vietnam', 9389720, 10.82302, 106.62965, 'scattered clouds', 28.01, 1012.0, 89.0, 1.03, datetime.datetime(2024, 6, 1, 5, 30, 3), datetime.datetime(2024, 6, 1, 18, 12, 56)]]
+[2024-06-01T15:52:16.775+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-06-01T15:52:16.813+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=my_weather_workflow_DAG_v04, task_id=load_data_joined, run_id=manual__2024-06-01T14:44:02.662915+00:00, execution_date=20240601T144402, start_date=20240601T155216, end_date=20240601T155216
+[2024-06-01T15:52:16.853+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-06-01T15:52:16.881+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-06-01T15:52:16.884+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

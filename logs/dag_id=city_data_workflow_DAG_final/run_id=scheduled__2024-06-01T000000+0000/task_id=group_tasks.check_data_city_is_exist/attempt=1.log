@@ -1,0 +1,26 @@
+[2024-06-02T10:39:34.882+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-06-02T10:39:34.905+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: city_data_workflow_DAG_final.group_tasks.check_data_city_is_exist scheduled__2024-06-01T00:00:00+00:00 [queued]>
+[2024-06-02T10:39:34.914+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: city_data_workflow_DAG_final.group_tasks.check_data_city_is_exist scheduled__2024-06-01T00:00:00+00:00 [queued]>
+[2024-06-02T10:39:34.915+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 6
+[2024-06-02T10:39:34.933+0000] {taskinstance.py:2330} INFO - Executing <Task(BranchPythonOperator): group_tasks.check_data_city_is_exist> on 2024-06-01 00:00:00+00:00
+[2024-06-02T10:39:34.941+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'city_data_workflow_DAG_final', 'group_tasks.check_data_city_is_exist', 'scheduled__2024-06-01T00:00:00+00:00', '--job-id', '941', '--raw', '--subdir', 'DAGS_FOLDER/tasks_flow.py', '--cfg-path', '/tmp/tmp_tdieahf']
+[2024-06-02T10:39:34.945+0000] {standard_task_runner.py:91} INFO - Job 941: Subtask group_tasks.check_data_city_is_exist
+[2024-06-02T10:39:34.949+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=190) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-06-02T10:39:34.951+0000] {standard_task_runner.py:63} INFO - Started process 192 to run task
+[2024-06-02T10:39:35.010+0000] {task_command.py:426} INFO - Running <TaskInstance: city_data_workflow_DAG_final.group_tasks.check_data_city_is_exist scheduled__2024-06-01T00:00:00+00:00 [running]> on host cd9caf1c47f0
+[2024-06-02T10:39:35.107+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Khang' AIRFLOW_CTX_DAG_ID='city_data_workflow_DAG_final' AIRFLOW_CTX_TASK_ID='group_tasks.check_data_city_is_exist' AIRFLOW_CTX_EXECUTION_DATE='2024-06-01T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2024-06-01T00:00:00+00:00'
+[2024-06-02T10:39:35.108+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-06-02T10:39:35.122+0000] {baseoperator.py:399} WARNING - BranchPythonOperator.execute cannot be called outside TaskInstance!
+[2024-06-02T10:39:35.150+0000] {base.py:84} INFO - Using connection ID 'postgres_connection_id' for task execution.
+[2024-06-02T10:39:35.159+0000] {sql.py:470} INFO - Running statement: SELECT COUNT(*) FROM cities WHERE wiki_id = 'Q1854';, parameters: None
+[2024-06-02T10:39:35.180+0000] {sql.py:479} INFO - Rows affected: 1
+[2024-06-02T10:39:35.181+0000] {python.py:237} INFO - Done. Returned value was: end_tasks_flow
+[2024-06-02T10:39:35.182+0000] {branch.py:36} INFO - Branch into end_tasks_flow
+[2024-06-02T10:39:35.182+0000] {skipmixin.py:178} INFO - Following branch end_tasks_flow
+[2024-06-02T10:39:35.212+0000] {skipmixin.py:246} INFO - Skipping tasks [('group_tasks.load_csv_city_to_postgres', -1)]
+[2024-06-02T10:39:35.249+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-06-02T10:39:35.285+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=city_data_workflow_DAG_final, task_id=group_tasks.check_data_city_is_exist, run_id=scheduled__2024-06-01T00:00:00+00:00, execution_date=20240601T000000, start_date=20240602T103934, end_date=20240602T103935
+[2024-06-02T10:39:35.327+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-06-02T10:39:35.347+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/models/baseoperator.py:1296 AirflowProviderDeprecationWarning: Call to deprecated class PostgresOperator. (Please use `***.providers.common.sql.operators.sql.SQLExecuteQueryOperator`.Also, you can provide `hook_params={'schema': <database>}`.)
+[2024-06-02T10:39:35.375+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-06-02T10:39:35.384+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

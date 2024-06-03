@@ -1,0 +1,1 @@
+[2024-05-25T15:13:46.891+0000] {task_context_logger.py:104} ERROR - Executor reports task instance <TaskInstance: my_weather_workflow_DAG_v03.transform_data_response manual__2024-05-25T14:17:09.446675+00:00 [queued]> finished (failed) although the task says it's queued. (Info: None) Was the task killed externally?

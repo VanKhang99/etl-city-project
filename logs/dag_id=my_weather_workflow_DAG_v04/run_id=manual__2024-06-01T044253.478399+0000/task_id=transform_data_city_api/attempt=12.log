@@ -1,0 +1,17 @@
+[2024-06-01T05:12:37.834+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-06-01T05:12:37.854+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: my_weather_workflow_DAG_v04.transform_data_city_api manual__2024-06-01T04:42:53.478399+00:00 [queued]>
+[2024-06-01T05:12:37.862+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: my_weather_workflow_DAG_v04.transform_data_city_api manual__2024-06-01T04:42:53.478399+00:00 [queued]>
+[2024-06-01T05:12:37.863+0000] {taskinstance.py:2306} INFO - Starting attempt 12 of 17
+[2024-06-01T05:12:37.878+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): transform_data_city_api> on 2024-06-01 04:42:53.478399+00:00
+[2024-06-01T05:12:37.891+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=5067) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-06-01T05:12:37.893+0000] {standard_task_runner.py:63} INFO - Started process 5069 to run task
+[2024-06-01T05:12:37.892+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'my_weather_workflow_DAG_v04', 'transform_data_city_api', 'manual__2024-06-01T04:42:53.478399+00:00', '--job-id', '566', '--raw', '--subdir', 'DAGS_FOLDER/weather_dag.py', '--cfg-path', '/tmp/tmpen6fummy']
+[2024-06-01T05:12:37.895+0000] {standard_task_runner.py:91} INFO - Job 566: Subtask transform_data_city_api
+[2024-06-01T05:12:37.969+0000] {task_command.py:426} INFO - Running <TaskInstance: my_weather_workflow_DAG_v04.transform_data_city_api manual__2024-06-01T04:42:53.478399+00:00 [running]> on host cd9caf1c47f0
+[2024-06-01T05:12:38.066+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Khang' AIRFLOW_CTX_DAG_ID='my_weather_workflow_DAG_v04' AIRFLOW_CTX_TASK_ID='transform_data_city_api' AIRFLOW_CTX_EXECUTION_DATE='2024-06-01T04:42:53.478399+00:00' AIRFLOW_CTX_TRY_NUMBER='12' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-06-01T04:42:53.478399+00:00'
+[2024-06-01T05:12:38.067+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-06-01T05:12:38.104+0000] {python.py:237} INFO - Done. Returned value was: {'file_name': 'city_data_01-06-2024.csv', 'wiki_id': 'Q25315', 'latitude': 10.937, 'longitude': 108.15778}
+[2024-06-01T05:12:38.104+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-06-01T05:12:38.135+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=my_weather_workflow_DAG_v04, task_id=transform_data_city_api, run_id=manual__2024-06-01T04:42:53.478399+00:00, execution_date=20240601T044253, start_date=20240601T051237, end_date=20240601T051238
+[2024-06-01T05:12:38.188+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-06-01T05:12:38.208+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

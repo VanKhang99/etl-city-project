@@ -1,0 +1,24 @@
+[2024-06-03T09:42:55.546+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-06-03T09:42:55.570+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: city_data_workflow_DAG_final.group_tasks.extract_weather_data_from_api manual__2024-06-03T09:36:21.462350+00:00 [queued]>
+[2024-06-03T09:42:55.578+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: city_data_workflow_DAG_final.group_tasks.extract_weather_data_from_api manual__2024-06-03T09:36:21.462350+00:00 [queued]>
+[2024-06-03T09:42:55.579+0000] {taskinstance.py:2306} INFO - Starting attempt 3 of 8
+[2024-06-03T09:42:55.592+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): group_tasks.extract_weather_data_from_api> on 2024-06-03 09:36:21.462350+00:00
+[2024-06-03T09:42:55.600+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=2281) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-06-03T09:42:55.601+0000] {standard_task_runner.py:63} INFO - Started process 2283 to run task
+[2024-06-03T09:42:55.600+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'city_data_workflow_DAG_final', 'group_tasks.extract_weather_data_from_api', 'manual__2024-06-03T09:36:21.462350+00:00', '--job-id', '1000', '--raw', '--subdir', 'DAGS_FOLDER/tasks_flow.py', '--cfg-path', '/tmp/tmpq_uvlsox']
+[2024-06-03T09:42:55.602+0000] {standard_task_runner.py:91} INFO - Job 1000: Subtask group_tasks.extract_weather_data_from_api
+[2024-06-03T09:42:55.662+0000] {task_command.py:426} INFO - Running <TaskInstance: city_data_workflow_DAG_final.group_tasks.extract_weather_data_from_api manual__2024-06-03T09:36:21.462350+00:00 [running]> on host cd9caf1c47f0
+[2024-06-03T09:42:55.805+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Khang' AIRFLOW_CTX_DAG_ID='city_data_workflow_DAG_final' AIRFLOW_CTX_TASK_ID='group_tasks.extract_weather_data_from_api' AIRFLOW_CTX_EXECUTION_DATE='2024-06-03T09:36:21.462350+00:00' AIRFLOW_CTX_TRY_NUMBER='3' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-06-03T09:36:21.462350+00:00'
+[2024-06-03T09:42:55.807+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-06-03T09:42:55.825+0000] {baseoperator.py:399} WARNING - SimpleHttpOperator.execute cannot be called outside TaskInstance!
+[2024-06-03T09:42:55.825+0000] {http.py:169} INFO - Calling HTTP method
+[2024-06-03T09:42:55.841+0000] {base.py:84} INFO - Using connection ID 'weather_map_api_connection' for task execution.
+[2024-06-03T09:42:55.855+0000] {base.py:84} INFO - Using connection ID 'weather_map_api_connection' for task execution.
+[2024-06-03T09:42:56.044+0000] {http.py:208} INFO - {"coord":{"lon":108.0833,"lat":16.0833},"weather":[{"id":801,"main":"Clouds","description":"few clouds","icon":"02d"}],"base":"stations","main":{"temp":307.1,"feels_like":314.1,"temp_min":307.1,"temp_max":307.1,"pressure":1005,"humidity":66},"visibility":10000,"wind":{"speed":3.09,"deg":100},"clouds":{"all":20},"dt":1717407616,"sys":{"type":1,"id":9306,"country":"VN","sunrise":1717366501,"sunset":1717413418},"timezone":25200,"id":1905468,"name":"Thanh Pho GJa Nang","cod":200}
+[2024-06-03T09:42:56.067+0000] {python.py:237} INFO - Done. Returned value was: None
+[2024-06-03T09:42:56.068+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-06-03T09:42:56.085+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=city_data_workflow_DAG_final, task_id=group_tasks.extract_weather_data_from_api, run_id=manual__2024-06-03T09:36:21.462350+00:00, execution_date=20240603T093621, start_date=20240603T094255, end_date=20240603T094256
+[2024-06-03T09:42:56.137+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-06-03T09:42:56.153+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/models/baseoperator.py:1296 AirflowProviderDeprecationWarning: Call to deprecated class PostgresOperator. (Please use `***.providers.common.sql.operators.sql.SQLExecuteQueryOperator`.Also, you can provide `hook_params={'schema': <database>}`.)
+[2024-06-03T09:42:56.174+0000] {taskinstance.py:3498} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2024-06-03T09:42:56.178+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

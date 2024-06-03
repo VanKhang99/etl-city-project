@@ -1,0 +1,46 @@
+[2024-06-01T07:45:22.588+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-06-01T07:45:22.610+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: my_weather_workflow_DAG_v04.group_tasks.check_data_is_exist manual__2024-06-01T07:22:32.449327+00:00 [queued]>
+[2024-06-01T07:45:22.619+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: my_weather_workflow_DAG_v04.group_tasks.check_data_is_exist manual__2024-06-01T07:22:32.449327+00:00 [queued]>
+[2024-06-01T07:45:22.620+0000] {taskinstance.py:2306} INFO - Starting attempt 3 of 8
+[2024-06-01T07:45:22.635+0000] {taskinstance.py:2330} INFO - Executing <Task(BranchPythonOperator): group_tasks.check_data_is_exist> on 2024-06-01 07:22:32.449327+00:00
+[2024-06-01T07:45:22.643+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=7977) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-06-01T07:45:22.643+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'my_weather_workflow_DAG_v04', 'group_tasks.check_data_is_exist', 'manual__2024-06-01T07:22:32.449327+00:00', '--job-id', '594', '--raw', '--subdir', 'DAGS_FOLDER/weather_dag.py', '--cfg-path', '/tmp/tmp8wc_dsja']
+[2024-06-01T07:45:22.645+0000] {standard_task_runner.py:63} INFO - Started process 7979 to run task
+[2024-06-01T07:45:22.645+0000] {standard_task_runner.py:91} INFO - Job 594: Subtask group_tasks.check_data_is_exist
+[2024-06-01T07:45:22.708+0000] {task_command.py:426} INFO - Running <TaskInstance: my_weather_workflow_DAG_v04.group_tasks.check_data_is_exist manual__2024-06-01T07:22:32.449327+00:00 [running]> on host cd9caf1c47f0
+[2024-06-01T07:45:22.829+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Khang' AIRFLOW_CTX_DAG_ID='my_weather_workflow_DAG_v04' AIRFLOW_CTX_TASK_ID='group_tasks.check_data_is_exist' AIRFLOW_CTX_EXECUTION_DATE='2024-06-01T07:22:32.449327+00:00' AIRFLOW_CTX_TRY_NUMBER='3' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-06-01T07:22:32.449327+00:00'
+[2024-06-01T07:45:22.832+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-06-01T07:45:22.857+0000] {baseoperator.py:399} WARNING - BranchPythonOperator.execute cannot be called outside TaskInstance!
+[2024-06-01T07:45:22.877+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-06-01T07:45:22.878+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 269, in execute
+    return self.do_branch(context, super().execute(context))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 235, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 252, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/weather_dag.py", line 72, in check_data_is_exist
+    id = ti.xcom_pull(task_ids=task_ids)['fk_city' if is_weather else 'wiki_id']
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+[2024-06-01T07:45:22.900+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=my_weather_workflow_DAG_v04, task_id=group_tasks.check_data_is_exist, run_id=manual__2024-06-01T07:22:32.449327+00:00, execution_date=20240601T072232, start_date=20240601T074522, end_date=20240601T074522
+[2024-06-01T07:45:22.915+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 594 for task group_tasks.check_data_is_exist ('NoneType' object is not subscriptable; 7979)
+[2024-06-01T07:45:22.940+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 1
+[2024-06-01T07:45:22.968+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-06-01T07:45:22.971+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

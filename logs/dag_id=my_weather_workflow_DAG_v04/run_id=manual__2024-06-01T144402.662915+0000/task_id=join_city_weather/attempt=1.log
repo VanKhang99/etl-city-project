@@ -1,0 +1,79 @@
+[2024-06-01T14:44:29.853+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-06-01T14:44:29.875+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: my_weather_workflow_DAG_v04.join_city_weather manual__2024-06-01T14:44:02.662915+00:00 [queued]>
+[2024-06-01T14:44:29.884+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: my_weather_workflow_DAG_v04.join_city_weather manual__2024-06-01T14:44:02.662915+00:00 [queued]>
+[2024-06-01T14:44:29.885+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 6
+[2024-06-01T14:44:29.898+0000] {taskinstance.py:2330} INFO - Executing <Task(PostgresOperator): join_city_weather> on 2024-06-01 14:44:02.662915+00:00
+[2024-06-01T14:44:29.906+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'my_weather_workflow_DAG_v04', 'join_city_weather', 'manual__2024-06-01T14:44:02.662915+00:00', '--job-id', '757', '--raw', '--subdir', 'DAGS_FOLDER/tasks_flow.py', '--cfg-path', '/tmp/tmpg8mnisao']
+[2024-06-01T14:44:29.909+0000] {standard_task_runner.py:91} INFO - Job 757: Subtask join_city_weather
+[2024-06-01T14:44:29.912+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=532) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-06-01T14:44:29.914+0000] {standard_task_runner.py:63} INFO - Started process 534 to run task
+[2024-06-01T14:44:29.970+0000] {task_command.py:426} INFO - Running <TaskInstance: my_weather_workflow_DAG_v04.join_city_weather manual__2024-06-01T14:44:02.662915+00:00 [running]> on host cd9caf1c47f0
+[2024-06-01T14:44:30.068+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Khang' AIRFLOW_CTX_DAG_ID='my_weather_workflow_DAG_v04' AIRFLOW_CTX_TASK_ID='join_city_weather' AIRFLOW_CTX_EXECUTION_DATE='2024-06-01T14:44:02.662915+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-06-01T14:44:02.662915+00:00'
+[2024-06-01T14:44:30.070+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-06-01T14:44:30.082+0000] {sql.py:276} INFO - Executing: SELECT 
+    c.wiki_id AS id_city,
+    name,
+    country,
+    population,
+    latitude,
+    longitude,
+    weather_description,
+    temperature_celsius,
+    pressure,
+    humidity,
+    wind_speed,
+    sunrise_time,
+    sunset_time
+FROM cities c
+JOIN weather w 
+    ON c.wiki_id = w.fk_city;
+[2024-06-01T14:44:30.095+0000] {base.py:84} INFO - Using connection ID 'postgres_connection_id' for task execution.
+[2024-06-01T14:44:30.107+0000] {base.py:84} INFO - Using connection ID 'postgres_connection_id' for task execution.
+[2024-06-01T14:44:30.116+0000] {sql.py:470} INFO - Running statement: SELECT 
+    c.wiki_id AS id_city,
+    name,
+    country,
+    population,
+    latitude,
+    longitude,
+    weather_description,
+    temperature_celsius,
+    pressure,
+    humidity,
+    wind_speed,
+    sunrise_time,
+    sunset_time
+FROM cities c
+JOIN weather w 
+    ON c.wiki_id = w.fk_city;, parameters: None
+[2024-06-01T14:44:30.117+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-06-01T14:44:30.118+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/common/sql/operators/sql.py", line 282, in execute
+    output = hook.run(
+             ^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/common/sql/hooks/sql.py", line 418, in run
+    self._run_command(cur, sql_statement, parameters)
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/common/sql/hooks/sql.py", line 475, in _run_command
+    cur.execute(sql_statement)
+psycopg2.errors.UndefinedTable: relation "weather" does not exist
+LINE 16: JOIN weather w 
+              ^
+
+[2024-06-01T14:44:30.132+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=my_weather_workflow_DAG_v04, task_id=join_city_weather, run_id=manual__2024-06-01T14:44:02.662915+00:00, execution_date=20240601T144402, start_date=20240601T144429, end_date=20240601T144430
+[2024-06-01T14:44:30.145+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 757 for task join_city_weather (relation "weather" does not exist
+LINE 16: JOIN weather w 
+              ^
+; 534)
+[2024-06-01T14:44:30.169+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 1
+[2024-06-01T14:44:30.214+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-06-01T14:44:30.218+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
