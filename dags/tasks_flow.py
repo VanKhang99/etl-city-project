@@ -7,12 +7,21 @@ from airflow.operators.python import BranchPythonOperator
 from airflow.providers.http.sensors.http import HttpSensor
 from airflow.providers.http.operators.http import SimpleHttpOperator
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
+from airflow.providers.amazon.aws.sensors.s3 import S3KeySensor
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.providers.postgres.hooks.postgres import PostgresHook
+from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
+from airflow.operators.email import EmailOperator
+
 
 import json
 import os
 import pandas as pd
+
+
+rapid_api_key = '94e1cf3537mshb395c2b8765d914p1dff7fjsnba7ed4fb8d55'
+weather_api_key = 'cb9774016f254a4cb1aa6516bf401afa'
+wiki_city_id = 'Q25282'
 
 #######################################################################################
 ################################### COMMON FUNCTION ###################################
@@ -72,8 +81,8 @@ def up_load_data_joined_to_s3(**kwargs):
   ti = kwargs['ti']
   file_name = ti.xcom_pull(task_ids ='save_data_joined_to_csv')
 
-  hook = S3Hook('weather_map_s3_connection')
-  hook.load_file(filename=f'/opt/airflow/data-transformed/{file_name}', key=file_name, bucket_name='data-about-city')
+  hook = S3Hook('aws_connection_id')
+  hook.load_file(filename=f'/opt/airflow/data-transformed/{file_name}', key=file_name, bucket_name='city-weather-data')
   
 def delete_files_csv():
   files = os.listdir('/opt/airflow/data-transformed')
@@ -195,7 +204,7 @@ with DAG (
   default_args = default_args,
   dag_id = 'city_data_workflow_DAG_final',
   description = 'Call city and weather API, insert to PosgreSQL and upload that data to AWS S3',
-  start_date= datetime(2024, 6, 3),
+  start_date= datetime.now(),
   schedule_interval = '@daily',
   catchup= False
 ) as dag:
@@ -203,18 +212,18 @@ with DAG (
   is_city_api_ready = HttpSensor(
     task_id = 'is_api_city_ready',
     http_conn_id = 'city_map_api_connection',
-    endpoint = '/v1/geo/cities/Q1854',
+    endpoint = f'/v1/geo/cities/{wiki_city_id}',
     headers = {
-        "X-RapidAPI-Key": "94e1cf3537mshb395c2b8765d914p1dff7fjsnba7ed4fb8d55"
+        "X-RapidAPI-Key": rapid_api_key
     }
   )
 
   extract_city_data_from_api = SimpleHttpOperator(
     task_id = 'extract_city_data_from_api',
     http_conn_id = 'city_map_api_connection',
-    endpoint ='/v1/geo/cities/Q1854',
+    endpoint = f'/v1/geo/cities/{wiki_city_id}',
     headers = {
-        "X-RapidAPI-Key": "94e1cf3537mshb395c2b8765d914p1dff7fjsnba7ed4fb8d55"
+        "X-RapidAPI-Key": rapid_api_key
     },
     method = 'GET',
     response_filter = lambda response: json.loads(response.text),
@@ -242,15 +251,38 @@ with DAG (
     python_callable = up_load_data_joined_to_s3,
   )
 
+  ################################### SNOWFLAKE ###################################
+  is_file_in_s3_available = S3KeySensor(
+    task_id='is_file_in_s3_available',
+    bucket_key = 's3://city-weather-data/{{ ti.xcom_pull(task_ids="save_data_joined_to_csv", key="return_value")}}',
+    bucket_name = None,
+    aws_conn_id = 'aws_connection_id',
+    wildcard_match = False,
+    poke_interval = 3
+  )
+
+  create_table_snowflake = SnowflakeOperator(
+    task_id = 'create_table_snowflake',
+    snowflake_conn_id = 'snowflake_connection_id',
+    sql = 'sql/create/create_table_city_info_snowflake.sql'
+  )
+
+  copy_csv_s3_to_snowflake_table = SnowflakeOperator(
+    task_id = 'copy_csv_s3_to_snowflake_table',
+    snowflake_conn_id = 'snowflake_connection_id',
+    sql = 'sql/queries/load_file_to_snowflake.sql'
+  )
+
+  notification_by_email = EmailOperator(
+    task_id = 'notification_by_email',
+    to="vankhang3699@gmail.com",
+    subject = "City and weather data workflow completed",
+    html_content = "City and weather data workflow completed successfully!"
+  )
+
   delete_files_csv = PythonOperator(
     task_id = 'delete_files_csv',
     python_callable = delete_files_csv
-  )
-
-  delete_data_in_postgres = PostgresOperator(
-    task_id = 'delete_data_in_postgres',
-    postgres_conn_id  = 'postgres_connection_id',
-    sql = 'sql/queries/delele_data.sql'
   )
 
   end_tasks_flow = DummyOperator(
@@ -275,7 +307,7 @@ with DAG (
       }
     )    
 
-    ################################### WEATHER ###################################
+  #   ################################### WEATHER ###################################
     is_weather_api_ready = PythonOperator(
       task_id = 'is_weather_api_ready',
       python_callable = is_weather_api_ready,
@@ -283,7 +315,7 @@ with DAG (
         'http_conn_id': 'weather_map_api_connection',
         'latitude': '{{ ti.xcom_pull(task_ids="transform_data_city_api")["latitude"] }}',
         'longitude': '{{ ti.xcom_pull(task_ids="transform_data_city_api")["longitude"] }}',
-        'API_KEY': 'cb9774016f254a4cb1aa6516bf401afa'
+        'API_KEY': weather_api_key
       },
       provide_context=True
     ) 
@@ -295,7 +327,7 @@ with DAG (
         'http_conn_id': 'weather_map_api_connection',
         'latitude': '{{ ti.xcom_pull(task_ids="transform_data_city_api")["latitude"] }}',
         'longitude': '{{ ti.xcom_pull(task_ids="transform_data_city_api")["longitude"] }}',
-        'API_KEY': 'cb9774016f254a4cb1aa6516bf401afa'
+        'API_KEY': weather_api_key
       },
       provide_context=True
     )
@@ -326,8 +358,10 @@ with DAG (
    
     is_weather_api_ready >> extract_weather_data_from_api >> transform_data_weather_api >> create_table_weather_postgresql >> load_csv_weather_to_postgres
 
-  is_city_api_ready >> extract_city_data_from_api >> transform_data_city_api >> group_tasks >> join_city_weather >> save_data_joined_to_csv >> up_load_data_joined_to_s3 >> delete_files_csv >> delete_data_in_postgres >> end_tasks_flow
+  is_city_api_ready >> extract_city_data_from_api >> transform_data_city_api >> group_tasks >> join_city_weather >> save_data_joined_to_csv >> up_load_data_joined_to_s3 
+  up_load_data_joined_to_s3 >>  is_file_in_s3_available >> create_table_snowflake >> copy_csv_s3_to_snowflake_table >> notification_by_email >> delete_files_csv >> end_tasks_flow
   
+
   
 
   

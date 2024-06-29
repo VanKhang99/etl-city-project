@@ -2575,3 +2575,24 @@ NameError: name 'load_csv_weather_to_postgreS' is not defined. Did you mean: 'lo
 [2024-06-03T11:38:25.798+0000] {logging_mixin.py:188} INFO - [2024-06-03T11:38:25.798+0000] {dag.py:3096} INFO - Sync 1 DAGs
 [2024-06-03T11:38:25.817+0000] {logging_mixin.py:188} INFO - [2024-06-03T11:38:25.817+0000] {dag.py:3954} INFO - Setting next_dagrun for city_data_workflow_DAG_final to 2024-06-03 00:00:00+00:00, run_after=2024-06-04 00:00:00+00:00
 [2024-06-03T11:38:25.840+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/tasks_flow.py took 0.476 seconds
+[2024-06-03T11:38:56.125+0000] {processor.py:161} INFO - Started process (PID=1938) to work on /opt/airflow/dags/tasks_flow.py
+[2024-06-03T11:38:56.127+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/tasks_flow.py for tasks to queue
+[2024-06-03T11:38:56.128+0000] {logging_mixin.py:188} INFO - [2024-06-03T11:38:56.128+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/tasks_flow.py
+[2024-06-03T11:38:56.483+0000] {processor.py:840} INFO - DAG(s) 'city_data_workflow_DAG_final' retrieved from /opt/airflow/dags/tasks_flow.py
+[2024-06-03T11:38:56.515+0000] {logging_mixin.py:188} INFO - [2024-06-03T11:38:56.514+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-06-03T11:38:56.541+0000] {logging_mixin.py:188} INFO - [2024-06-03T11:38:56.540+0000] {dag.py:3954} INFO - Setting next_dagrun for city_data_workflow_DAG_final to 2024-06-03 00:00:00+00:00, run_after=2024-06-04 00:00:00+00:00
+[2024-06-03T11:38:56.562+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/tasks_flow.py took 0.442 seconds
+[2024-06-03T11:39:26.836+0000] {processor.py:161} INFO - Started process (PID=1950) to work on /opt/airflow/dags/tasks_flow.py
+[2024-06-03T11:39:26.837+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/tasks_flow.py for tasks to queue
+[2024-06-03T11:39:26.839+0000] {logging_mixin.py:188} INFO - [2024-06-03T11:39:26.838+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/tasks_flow.py
+[2024-06-03T11:39:27.199+0000] {processor.py:840} INFO - DAG(s) 'city_data_workflow_DAG_final' retrieved from /opt/airflow/dags/tasks_flow.py
+[2024-06-03T11:39:27.234+0000] {logging_mixin.py:188} INFO - [2024-06-03T11:39:27.234+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-06-03T11:39:27.257+0000] {logging_mixin.py:188} INFO - [2024-06-03T11:39:27.257+0000] {dag.py:3954} INFO - Setting next_dagrun for city_data_workflow_DAG_final to 2024-06-03 00:00:00+00:00, run_after=2024-06-04 00:00:00+00:00
+[2024-06-03T11:39:27.287+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/tasks_flow.py took 0.457 seconds
+[2024-06-03T11:39:57.562+0000] {processor.py:161} INFO - Started process (PID=1962) to work on /opt/airflow/dags/tasks_flow.py
+[2024-06-03T11:39:57.564+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/tasks_flow.py for tasks to queue
+[2024-06-03T11:39:57.565+0000] {logging_mixin.py:188} INFO - [2024-06-03T11:39:57.565+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/tasks_flow.py
+[2024-06-03T11:39:57.918+0000] {processor.py:840} INFO - DAG(s) 'city_data_workflow_DAG_final' retrieved from /opt/airflow/dags/tasks_flow.py
+[2024-06-03T11:39:57.949+0000] {logging_mixin.py:188} INFO - [2024-06-03T11:39:57.948+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-06-03T11:39:57.970+0000] {logging_mixin.py:188} INFO - [2024-06-03T11:39:57.969+0000] {dag.py:3954} INFO - Setting next_dagrun for city_data_workflow_DAG_final to 2024-06-03 00:00:00+00:00, run_after=2024-06-04 00:00:00+00:00
+[2024-06-03T11:39:57.987+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/tasks_flow.py took 0.434 seconds
